@@ -1,0 +1,9 @@
+FROM postgres:14.3
+
+ENV DB_USER ${DB_USER}
+ENV DB_PASSWOED ${DB_PASSWORD}
+ENV DB_PORT ${DB_PORT}
+ENV DB_HOST ${DB_HOST}
+ENV DB_DATABASE ${DB_DATABASE}
+
+COPY init.sql /docker-entrypoint-initdb.d/
