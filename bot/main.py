@@ -14,11 +14,10 @@ from psycopg2 import Error
 
 from uuid import uuid4
 
-found_dotenv = find_dotenv()
-load_dotenv(dotenv_path=found_dotenv)
+#found_dotenv = find_dotenv()
+#load_dotenv(found_dotenv)
 
 TOKEN = os.getenv('TOKEN')
-
 # Подключаем логирование
 logging.basicConfig(
     filename='logfile.txt', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)

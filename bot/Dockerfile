@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY . .
 
+ARG TOKEN
 ENV TOKEN ${TOKEN}
 
 RUN apt-get update
