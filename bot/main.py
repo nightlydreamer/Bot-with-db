@@ -7,14 +7,17 @@ import re
 import paramiko
 import os
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
 import psycopg2
 from psycopg2 import Error
 
 from uuid import uuid4
 
-TOKEN = "6839477991:AAG5caWcOoB7Uqm6WHi6qo-f2d9Ewoq8Q0c"
+found_dotenv = find_dotenv()
+load_dotenv(dotenv_path=found_dotenv)
+
+TOKEN = os.getenv('TOKEN')
 
 # Подключаем логирование
 logging.basicConfig(
@@ -147,11 +150,10 @@ def verify_password(update: Update, context):
 
 
 def connectHost(command, package=None):
-    load_dotenv()
-    host = os.getenv('HOST')
-    port = os.getenv('PORT')
-    username = os.getenv('USER')
-    password = os.getenv('PASSWORD')
+    host = os.getenv('RM_HOST')
+    port = os.getenv('RM_PORT')
+    username = os.getenv('RM_USER')
+    password = os.getenv('RM_PASSWORD')
 
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -197,21 +199,11 @@ def connectDB(command, data=None):
     load_dotenv()
     connection = None
     try:
-        user = os.getenv('USER_DB')
-        logging.debug(f'Пользователь: {user}')
-        password = os.getenv('PASSWORD_DB')
-        logging.debug(f'Пароль: {password}')
-        host = os.getenv('HOST')
-        logging.debug(f'Хост: {host}')
-        port = os.getenv('PORT')
-        logging.debug(f'Порт: {port}')
-        database = os.getenv('DB')
-        logging.debug(f'БД: {database}')
-        connection = psycopg2.connect(user=os.getenv('USER_DB'),
-                                      password=os.getenv('PASSWORD_DB'),
-                                      host=os.getenv('HOST'),
-                                      port=os.getenv('PORT_DB'),
-                                      database=os.getenv('DB'))
+        connection = psycopg2.connect(user=os.getenv('DB_USER'),
+                                      password=os.getenv('DB_PASSWORD'),
+                                      host=os.getenv('DB_HOST'),
+                                      port=os.getenv('DB_PORT'),
+                                      database=os.getenv('DB_DATABASE'))
         cursor = connection.cursor()
         if command == 'get_emails':
             cursor.execute("SELECT email FROM emails;")
